@@ -1,29 +1,52 @@
-'use client'
+"use client";
 
-import {Layout, Breadcrumb, theme} from 'antd'
+import { Layout, Avatar, List, theme } from "antd";
+import { ethers } from "ethers";
 
-const {Content} = Layout;
+const { Content } = Layout;
 
-const MainContent = () => {
-
+const MainContent = ({
+  project,
+  provider,
+}: {
+  project: Project[];
+  provider: ethers.providers.Web3Provider;
+}) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   return (
-    <Content style={{ padding: '0 48px' }}>
+    <Content style={{ padding: "0 48px" }}>
       <div
         style={{
-          background: colorBgContainer,
+          padding: "0 24px 0 24px",
+          margin: 0,
           minHeight: 280,
-          padding: 24,
+          background: colorBgContainer,
           borderRadius: borderRadiusLG,
         }}
       >
-        Content
+        <List
+          itemLayout="horizontal"
+          dataSource={project}
+          renderItem={(item, index) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
+                  />
+                }
+                title={<a href="https://ant.design">{item.title}</a>}
+                description="项目简介"
+              />
+            </List.Item>
+          )}
+        />
       </div>
     </Content>
-  )
-}
+  );
+};
 
 export default MainContent;
