@@ -1,48 +1,46 @@
-'use client'
+"use client";
 
-import { Layout, Menu, theme } from "antd"
-import type { MenuProps } from 'antd';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Menu, GetProp, MenuProps } from "antd";
+import {
+  LinkOutlined
+} from "@ant-design/icons";
 import React from "react";
+import Link from 'next/link'
 
-const {Sider} = Layout;
+type MenuItem = GetProp<MenuProps, 'items'>[number];
 
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
+const { Sider } = Layout;
+const prefix = 'http://localhost:3000/dashboard/'
 
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
+const items = [
+  {
+    key: 1,
+    icon: (<LinkOutlined />),
+    label: (<Link href={prefix} key={1}>evm-bot</Link>),
+  }
+]
 
 const SideNav = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
+  function getItem(): MenuItem[] {
+    return [{
+      key: 1,
+      icon: (<LinkOutlined />),
+      label: 'evm-bot',
+    }];
+  }
 
   return (
-    <Sider width={200} style={{ background: colorBgContainer }}>
+    <Sider>
+      <div className="demo-logo-vertical" />
       <Menu
+        theme="dark"
         mode="inline"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        style={{ height: '100%', borderRight: 0 }}
-        items={items2}
+        defaultSelectedKeys={["1"]}
+        items={items}
       />
     </Sider>
-  )
-}
+  );
+};
 
 export default SideNav;

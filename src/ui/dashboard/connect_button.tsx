@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { formatBalance, formatChainAsNum } from "@/util";
+import { formatBalance } from "@/utils";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { Button } from "antd";
 

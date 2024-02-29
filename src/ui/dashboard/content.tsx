@@ -1,49 +1,41 @@
 "use client";
 
-import { Layout, Avatar, List, theme } from "antd";
-import { ethers } from "ethers";
+import { Layout, Tabs } from "antd";
+import { chainList } from "@/constants";
+import { useEffect, useState } from "react";
+import ModuleLayou from "./module_data_layout";
+import { getModulesByChainId } from "@/modules";
 
 const { Content } = Layout;
 
-const MainContent = ({
-  project,
-  provider,
-}: {
-  project: Project[];
-  provider: ethers.providers.Web3Provider;
-}) => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+const tabItems: any = chainList.map((chain) => ({
+  key: chain.chainId,
+  label: chain.label,
+}));
+
+const MainContent = () => {
+  const initPortent = getModulesByChainId(1101);
+  const [modules, setModules] = useState(initPortent);
+
+  useEffect(() => {
+    console.log('father component')
+  },[modules])
+
+  const onChange = (key: string) => {
+    const projects = getModulesByChainId(Number(key));
+    setModules(projects)
+  };
 
   return (
-    <Content style={{ padding: "0 48px" }}>
+    <Content style={{ padding: "0 6px" }}>
+      <Tabs defaultActiveKey="1" items={tabItems} onChange={onChange} />
       <div
         style={{
-          padding: "0 24px 0 24px",
           margin: 0,
           minHeight: 280,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
         }}
       >
-        <List
-          itemLayout="horizontal"
-          dataSource={project}
-          renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-                  />
-                }
-                title={<a href="https://ant.design">{item.title}</a>}
-                description="项目简介"
-              />
-            </List.Item>
-          )}
-        />
+        <ModuleLayou modules={modules}/>
       </div>
     </Content>
   );
